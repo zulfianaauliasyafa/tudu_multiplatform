@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "242894220546",
+    "project_id": "tudu-6f3cd",
+    "storage_bucket": "tudu-6f3cd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:242894220546:android:3a66c0db5ca103d38ee61b",
+        "android_client_info": {
+          "package_name": "com.example.tudu"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAq0salHgOHfBBVNAc-ZlhGQBMZGK8GZO0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
