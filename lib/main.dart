@@ -1,10 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:tudu/firebase_options.dart'; // <-- 1. TAMBAHKAN IMPORT INI
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tudu/core/di/injection_container.dart' as di;
-import 'package:tudu/presentation/bloc/auth_bloc.dart';
+import 'package:tudu/presentation/provider/auth_provider.dart';
 import 'package:tudu/presentation/pages/home_page.dart';
 import 'package:tudu/presentation/pages/login_page.dart';
 import 'package:tudu/presentation/pages/regist_page.dart';
@@ -28,8 +28,8 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => di.sl<AuthBloc>()..add(CheckAuthStatusEvent()),
+    return ChangeNotifierProvider(
+      create: (_) => AuthProvider(authUseCases: di.sl()),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: const AuthCheck(),
@@ -48,18 +48,17 @@ class AuthCheck extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthBloc, AuthState>(
-      builder: (context, state) {
-        if (state is AuthLoading || state is AuthInitial) {
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
-        } else if (state is Authenticated) {
-          return const HomePage();
-        } else {
-          return const LoginPage();
-        }
-      },
-    );
+    // watch<T>() rebuilds the widget when the provider's state changes.
+    final authProvider = context.watch<AuthProvider>();
+
+    if (authProvider.status == AuthStatus.Authenticating || authProvider.status == AuthStatus.Uninitialized) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    } else if (authProvider.status == AuthStatus.Authenticated) {
+      return const HomePage();
+    } else {
+      return const LoginPage();
+    }
   }
 }

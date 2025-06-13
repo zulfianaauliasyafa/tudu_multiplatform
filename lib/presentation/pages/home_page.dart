@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tudu/presentation/bloc/auth_bloc.dart';
-import 'package:tudu/presentation/pages/login_page.dart';
+import 'package:provider/provider.dart';
+import 'package:tudu/presentation/provider/auth_provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -15,11 +14,8 @@ class HomePage extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () {
-              context.read<AuthBloc>().add(SignOutEvent());
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const LoginPage()),
-              );
+              context.read<AuthProvider>().signOut();
+              // No navigation needed here. AuthCheck handles it.
             },
           )
         ],
